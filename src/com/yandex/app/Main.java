@@ -1,6 +1,10 @@
+package com.yandex.app;
+import com.yandex.app.model.*;
+
 public class Main {
 
     public static void main(String[] args) {
+
         TaskManager taskManager = new TaskManager();
         Task task1 = taskManager.addTask("Задача 1", "Описание 1");
         Task task2 = taskManager.addTask("Задача 2", "Описание 2");
@@ -37,10 +41,9 @@ public class Main {
                     ", Статус: " + subtask.getStatus());
         }
 
-
         task1.setStatus(Status.IN_PROGRESS);
         subtask1Epic1.setStatus(Status.DONE);
-
+        subtask2Epic1.setStatus(Status.NEW);
 
         epic1.updateEpicStatus();
 
@@ -48,6 +51,7 @@ public class Main {
         System.out.println("\nСтатусы:");
         System.out.println("Статус задачи 1: " + task1.getStatus());
         System.out.println("Статус подзадачи 1.1: " + subtask1Epic1.getStatus());
+        System.out.println("Статус подзадачи 1.2: " + subtask2Epic1.getStatus());
         System.out.println("Статус эпика 1: " + epic1.getStatus());
 
 
@@ -58,11 +62,15 @@ public class Main {
             System.out.println(task.getId() + ". " + task.getTitle());
         }
 
-        taskManager.deleteEpicById(epic2Id);
+        taskManager.deleteEpicById(epic1Id);
 
         System.out.println("\nОстались эпики:");
         for (Epic epic : taskManager.getAllEpics()) {
             System.out.println(epic.getId() + ". " + epic.getTitle());
+        }
+        System.out.println("\nОстались подзадачи:");
+        for (Subtask subtask : taskManager.getAllSubtasks()) {
+            System.out.println(subtask.getId() + ". " + subtask.getTitle());
         }
     }
 }

@@ -1,3 +1,5 @@
+package com.yandex.app.model;
+
 import java.util.HashMap;
 
 public class Epic extends Task {
@@ -14,35 +16,24 @@ public class Epic extends Task {
         updateEpicStatus();
     }
 
-
     public void updateEpicStatus() {
-
-        if (subtasks.isEmpty()) {
-            setStatus(Status.NEW);
-            return;
-        }
-
-        boolean subtaskNew = false;
-        boolean subtaskInProgress = false;
+        boolean subtasksNew = true;
+        boolean subtasksDone = true;
 
         for (Subtask subtask : subtasks.values()) {
-            switch (subtask.getStatus()) {
-                case NEW:
-                    subtaskNew = true;
-                    break;
-                case IN_PROGRESS:
-                    subtaskInProgress = true;
-                    break;
-                case DONE:
-                    break;
+            if (subtask.getStatus() != Status.NEW) {
+                subtasksNew = false;
             }
+            if (subtask.getStatus() != Status.DONE)
+                subtasksDone = false;
         }
-        if (subtaskNew) {
+
+        if (subtasks.isEmpty() || subtasksNew) {
             setStatus(Status.NEW);
-        } else if (subtaskInProgress) {
-            setStatus(Status.IN_PROGRESS);
-        } else {
+        } else if (subtasksDone) {
             setStatus(Status.DONE);
+        } else {
+            setStatus(Status.IN_PROGRESS);
         }
     }
 
@@ -50,3 +41,4 @@ public class Epic extends Task {
         return subtasks;
     }
 }
+

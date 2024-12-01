@@ -1,5 +1,7 @@
-import java.util.ArrayList;
+package com.yandex.app.model;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap();
@@ -11,28 +13,16 @@ public class TaskManager {
         return ++countId;
     }
 
-    public ArrayList<Task> getAllTasks() {   //Получение списка задач
-        ArrayList<Task> tasksList = new ArrayList<>();
-        for (Task task : tasks.values()) {
-            tasksList.add(task);
-        }
-        return tasksList;
+    public List<Task> getAllTasks() {
+        return List.copyOf(tasks.values());
     }
 
-    public ArrayList<Subtask> getAllSubtasks() {   //Получение списка подзадач
-        ArrayList<Subtask> subtasksList = new ArrayList<>();
-        for (Subtask subtask : subtasks.values()) {
-            subtasksList.add(subtask);
-        }
-        return subtasksList;
+    public List<Subtask> getAllSubtasks() {   //Получение списка подзадач
+        return List.copyOf(subtasks.values());
     }
 
-    public ArrayList<Epic> getAllEpics() {   //Получение спика эпиков
-        ArrayList<Epic> epicsList = new ArrayList<>();
-        for (Epic epic : epics.values()) {
-            epicsList.add(epic);
-        }
-        return epicsList;
+    public List<Epic> getAllEpics() {   //Получение спика эпиков
+        return List.copyOf(epics.values());
     }
 
     public void deleteAll() { //Удаление всех видов задач
@@ -98,6 +88,10 @@ public class TaskManager {
 
     public void deleteEpicById(int id) {
         if (epics.containsKey(id)) {
+            Epic epicToDelete = epics.get(id);
+            for(int subtaskId :  epicToDelete.getSubtasks().keySet()) {
+                subtasks.remove(subtaskId);
+            }
             epics.remove(id);
         }
     }
