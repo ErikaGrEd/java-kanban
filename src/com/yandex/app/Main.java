@@ -1,11 +1,17 @@
 package com.yandex.app;
-import com.yandex.app.model.*;
+import com.yandex.app.model.Epic;
+import com.yandex.app.model.Task;
+import com.yandex.app.model.Subtask;
+import com.yandex.app.model.Status;
+import com.yandex.app.service.InMemoryTaskManager;
+import com.yandex.app.service.TaskManager;
+import com.yandex.app.service.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
         Task task1 = taskManager.addTask("Задача 1", "Описание 1");
         Task task2 = taskManager.addTask("Задача 2", "Описание 2");
 
@@ -45,7 +51,8 @@ public class Main {
         subtask1Epic1.setStatus(Status.DONE);
         subtask2Epic1.setStatus(Status.NEW);
 
-        epic1.updateEpicStatus();
+        taskManager.updateSubtask(subtask1Epic1);
+        taskManager.updateSubtask(subtask2Epic1);
 
 
         System.out.println("\nСтатусы:");
