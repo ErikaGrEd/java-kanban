@@ -6,7 +6,7 @@ public class Task {
 
     private final String title;
     private final String description;
-    private final int id;
+    private int id;
     private Status status;
 
     public Task(String title, String description, int id) {
@@ -21,18 +21,26 @@ public class Task {
     }
 
     public String getDescription() {
+
         return description;
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public Status getStatus() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Status getStatus()
+    {
         return status;
     }
 
     public void setStatus(Status status) {
+
         this.status = status;
     }
 

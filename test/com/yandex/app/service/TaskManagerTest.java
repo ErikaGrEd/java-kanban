@@ -7,8 +7,8 @@ import com.yandex.app.model.Status;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
-import java.util.HashMap;
 import java.util.List;
+
 
 class TaskManagerTest {
 
@@ -34,7 +34,8 @@ class TaskManagerTest {
     }
 
     TaskManager taskManager = Managers.getDefault();
-@Test
+
+    @Test
     void noConflictIds() {
         Task task1 = taskManager.addTask("Задача 1", "Описание 1");
         Task task2 = taskManager.addTask("Задача 2", "Описание 2");
@@ -59,9 +60,9 @@ class TaskManagerTest {
         assertEquals(1, allSubtasks.size(), "одна подзадача в списке.");
         assertEquals(subtask, allSubtasks.getFirst(), "Подзадача должна совпадают.");
 
-        HashMap<Integer, Subtask> epicSubtasks = epic.getSubtasks();
+        List<Integer> epicSubtasks = epic.getSubtaskIds();
         assertEquals(1, epicSubtasks.size(), "У эпика одна подзадача.");
-        assertTrue(epicSubtasks.containsKey(subtask.getId()));
+        assertTrue(epicSubtasks.contains(subtask.getId()));
     }
 
     @Test
@@ -106,6 +107,37 @@ class TaskManagerTest {
 
         Task returnTask = history.getFirst();
         assertEquals("уборка", returnTask.getTitle(), "Одинаковые названия");
+    }
+
+    @Test
+    void addNSubtaskToNonExistentEpic() {
+        Subtask subtask = new Subtask("Название", "Описание", 1, 1000);
+        Subtask result = taskManager.addSubtask(subtask.getTitle(), subtask.getDescription(), subtask.getEpicId());
+        assertNull(result, "Подзадача не должна добавиться");
+    }
+
+    @Test
+    void deleteNonExistentTask() {
+        int countTaskBefore = taskManager.getAllTasks().size();
+        taskManager.deleteTaskById(2000);
+        int countTaskAfter = taskManager.getAllTasks().size();
+        assertEquals(countTaskBefore, countTaskAfter, "Должны быть одинаковые");
+    }
+
+    @Test
+    void updateStatusTaskWithIncorrectId() {
+        Task task = new Task("Название", "Описание", 1);
+        taskManager.addTask(task.getTitle(), task.getDescription());
+
+        String titleBefore = task.getTitle();
+        String descriptionBefore = task.getDescription();
+        task.setId(1000);
+
+        taskManager.updateTask(task);
+
+        assertEquals(titleBefore, task.getTitle(), "Должны быть одинаковые");
+        assertEquals(descriptionBefore, task.getDescription(), "Должны быть одинаковые");
+
     }
 }
 
