@@ -25,7 +25,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public  List<Task> getTasks() {
-    List <Task> tasks = new ArrayList<>();
+    List<Task> tasks = new ArrayList<>();
     Node currentNode = head;
     while (currentNode != null) {
         tasks.add(currentNode.task);
@@ -71,8 +71,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             return getTasks();
         }
             @Override
-            public void remove ( int id){
-                if(historyMap.containsKey(id)) {
+            public void remove ( int id) {
+                if (historyMap.containsKey(id)) {
                     removeNode(historyMap.get(id));
                     historyMap.remove(id);
             }

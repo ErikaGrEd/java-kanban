@@ -18,7 +18,6 @@ public class Epic extends Task {
     }
 
     public List<Integer> getSubtaskIds() {
-
         return subtaskIds;
     }
 }

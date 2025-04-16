@@ -2,7 +2,7 @@ package com.yandex.app.model;
 
 public class Subtask extends Task {
 
-    private int epicId;
+    private final int epicId;
 
     public Subtask(String title, String description, int id, int epicId) {
         super(title, description, id);
