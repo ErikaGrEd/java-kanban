@@ -17,22 +17,18 @@ public class Task {
     }
 
     public String getTitle() {
-
         return title;
     }
 
     public String getDescription() {
-
         return description;
     }
 
     public int getId() {
-
         return id;
     }
 
     public void setId(int id) {
-
         this.id = id;
     }
 
@@ -41,7 +37,6 @@ public class Task {
     }
 
     public void setStatus(Status status) {
-
         this.status = status;
     }
 
