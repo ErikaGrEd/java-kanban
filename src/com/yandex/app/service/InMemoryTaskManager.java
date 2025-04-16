@@ -22,7 +22,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getAllTasks() {
-
         return List.copyOf(tasks.values());
     }
 
@@ -132,7 +131,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-
         return historyManager.getHistory();
     }
 
