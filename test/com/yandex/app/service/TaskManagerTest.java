@@ -13,6 +13,59 @@ import java.util.List;
 class TaskManagerTest {
 
     @Test
+    void testAddTaskToAnd() {
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task("Задача 1", "Описание 1", 1);
+        Task task2 = new Task("Задача 2", "Описание 2", 2);
+        Task task3 = new Task("Задача 3", "Описание 3", 3);
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(3, history.size(), "Должно быть 3 задачи");
+        assertEquals(task1, history.get(0));
+        assertEquals(task2, history.get(1));
+        assertEquals(task3, history.get(2));
+
+    }
+
+    @Test
+    void testRemoveTask() {
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task("Задача 1", "Описание 1", 1);
+        Task task2 = new Task("Задача 2", "Описание 2", 2);
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.remove(1);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(1, history.size(), "После удаления должна остаться одна задача");
+        assertFalse(history.contains(task1), "Задача 1 должна быть удалена");
+        assertEquals(task2, history.getFirst());
+    }
+
+    @Test
+    void testWithoutDuplicateTask() {
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task("Задача 1", "Описание 1", 1);
+        Task task2 = new Task("Задача 2", "Описание 2", 2);
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task1);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task2, history.get(0));
+        assertEquals(task1, history.get(1));
+
+    }
+
+
+    @Test
     void TasksAreEqualById() {
         Task task1 = new Task("Задача 1", "Описание 1", 1);
         Task task2 = new Task("Задача 2", "Описание 2", 1);

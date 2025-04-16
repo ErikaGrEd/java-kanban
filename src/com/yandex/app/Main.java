@@ -3,7 +3,7 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Task;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Status;
-import com.yandex.app.service.InMemoryTaskManager;
+import com.yandex.app.service.InMemoryHistoryManager;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.service.Managers;
 
@@ -11,12 +11,39 @@ public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = Managers.getDefault();
-        Task task1 = taskManager.addTask("Задача 1", "Описание 1");
-        Task task2 = taskManager.addTask("Задача 2", "Описание 2");
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task("Задача 1", "Описание 1", 1);
+        Task task2 = new Task("Задача 2", "Описание 2", 2);
+        Task task3 = new Task("Задача 3", "Описание 3", 3);
 
-        // Создание эпиков и подзадач
-        Epic epic1 = taskManager.addEpic("Эпик 1", "Описание эпика 1");
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        historyManager.add(task1);
+
+        System.out.println("История просмотров: ");
+        for (Task task : historyManager.getHistory()) {
+            System.out.println(task.getTitle());
+        }
+
+        historyManager.remove(task3.getId());
+
+        System.out.println("Новая история просмотров: ");
+        for (Task task : historyManager.getHistory()) {
+            System.out.println(task.getTitle());
+        }
+
+        historyManager.add(task3);
+
+        System.out.println("Новая история просмотров 2: ");
+        for (Task task : historyManager.getHistory()) {
+            System.out.println(task.getTitle());
+        }
+
+
+
+        /* Создание эпиков и подзадач
+        //Epic epic1 = taskManager.addEpic("Эпик 1", "Описание эпика 1");
         int epic1Id = epic1.getId();
 
         Subtask subtask1Epic1 = taskManager.addSubtask("Подзадача 1.1", "Описание подзадачи 1.1", epic1Id);
@@ -80,6 +107,6 @@ public class Main {
         System.out.println("\nОстались подзадачи:");
         for (Subtask subtask : taskManager.getAllSubtasks()) {
             System.out.println(subtask.getId() + ". " + subtask.getTitle());
+            */
         }
     }
-}

@@ -17,11 +17,13 @@ public class InMemoryTaskManager implements TaskManager {
     private static int countId = 0;
 
     public static int generateId() {
+
         return ++countId;
     }
 
     @Override
     public List<Task> getAllTasks() {
+
         return List.copyOf(tasks.values());
     }
 
@@ -131,6 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
+
         return historyManager.getHistory();
     }
 
