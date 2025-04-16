@@ -52,7 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask addSubtask(String title, String description, int epicId) {// Добавление подзадач
+    public Subtask addSubtask(String title, String description, int epicId) { // Добавление подзадач
         if (!epics.containsKey(epicId)) {
             return null;
         }
