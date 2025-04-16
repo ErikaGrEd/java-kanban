@@ -17,6 +17,7 @@ public class Task {
     }
 
     public String getTitle() {
+
         return title;
     }
 
@@ -25,8 +26,7 @@ public class Task {
         return description;
     }
 
-    public int getId()
-    {
+    public int getId() {
 
         return id;
     }
@@ -36,9 +36,7 @@ public class Task {
         this.id = id;
     }
 
-    public Status getStatus()
-
-    {
+    public Status getStatus() {
         return status;
     }
 
