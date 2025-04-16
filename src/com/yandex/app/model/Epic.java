@@ -1,6 +1,5 @@
 package com.yandex.app.model;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,7 @@ public class Epic extends Task {
     }
 
     public List<Integer> getSubtaskIds() {
+
         return subtaskIds;
     }
 }
