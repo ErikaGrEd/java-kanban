@@ -1,4 +1,5 @@
 package com.yandex.app;
+
 import com.yandex.app.model.Task;
 import com.yandex.app.service.InMemoryHistoryManager;
 
@@ -103,5 +104,5 @@ public class Main {
         for (Subtask subtask : taskManager.getAllSubtasks()) {
             System.out.println(subtask.getId() + ". " + subtask.getTitle());
             */
-        }
     }
+}

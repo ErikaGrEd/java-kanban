@@ -1,7 +1,10 @@
 package com.yandex.app.service;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Status;
 import com.yandex.app.model.Subtask;
