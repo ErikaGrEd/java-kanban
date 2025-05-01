@@ -21,12 +21,10 @@ public class Task {
     }
 
     public String getDescription() {
-
         return description;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
@@ -34,13 +32,11 @@ public class Task {
         this.id = id;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
-
         this.status = status;
     }
 

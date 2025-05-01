@@ -42,7 +42,6 @@ public class InMemoryTaskManager implements TaskManager {
         epics.clear();
     }
 
-
     @Override
     public Task addTask(String title, String description) { // Добавление задач
         int id = generateId();
@@ -52,10 +51,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask addSubtask(String title, String description, int epicId) {// Добавление подзадач
+    public Subtask addSubtask(String title, String description, int epicId) { // Добавление подзадач
         if (!epics.containsKey(epicId)) {
             return null;
         }
+
         int id = generateId();
         Subtask subtask = new Subtask(title, description, id, epicId);
         subtasks.put(id, subtask);
@@ -149,10 +149,9 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasksDone = true;
             } else if (subtask.getStatus() == Status.IN_PROGRESS) {
                 subtasksInProgress = true;
-
-
             }
         }
+
         if (subtaskIds.isEmpty() || subtasksNew && !subtasksDone && !subtasksInProgress) {
             epic.setStatus(Status.NEW);
 

@@ -9,13 +9,13 @@ class ManagersTest {
 
     @Test
     void shouldReturnInitializedTaskManager() {
-        TaskManager taskManager  = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
         assertNotNull(taskManager);
     }
 
     @Test
     void shouldReturnInitializedHistoryManager() {
         HistoryManager historyManager = Managers.getDefaultHistory();
-    assertNotNull(historyManager);
+        assertNotNull(historyManager);
     }
 }
