@@ -28,6 +28,11 @@ public class Task {
         return id;
     }
 
+    public String getTittle() {
+        return title;
+    }
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -51,4 +56,19 @@ public class Task {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d,TASK,%s,%s,%s",
+                id,
+                title,
+                status,
+                description
+        );
+
+    }
+
+
 }
+
+
