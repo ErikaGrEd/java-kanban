@@ -1,11 +1,13 @@
 import com.yandex.app.model.Epic;
+import com.yandex.app.model.Task;
+import com.yandex.app.model.Subtask;
 import com.yandex.app.service.FileBackedTaskManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,5 +75,29 @@ class FileBackedTaskManagerTest {
             Files.deleteIfExists(tempFile.toPath());
 
         }
+    }
+
+    @Test
+    void testSaveAndLoadHistory() throws Exception {
+
+        File tempFile = File.createTempFile("tasks", ".csv");
+        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+
+        Task task1 = manager.addTask("Задача 1", "Описание 1");
+        Epic epic1 = manager.addEpic("Эпик 1", "Описание эпика 1");
+        Subtask subtask1 = manager.addSubtask("подзадача 1", "Описание подзадачи 1", epic1.getId());
+
+        manager.getTaskById(task1.getId());
+        manager.getEpicById(epic1.getId());
+        manager.getSubtaskById(subtask1.getId());
+
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
+
+        List<Task> history = loadedManager.getHistory();
+
+        assertEquals(3, history.size(), "История должна содержать 3 задачи");
+        assertEquals(task1.getId(), history.get(0).getId());
+        assertEquals(epic1.getId(), history.get(1).getId());
+        assertEquals(subtask1.getId(), history.get(2).getId());
     }
 }

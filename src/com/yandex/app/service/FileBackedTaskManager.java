@@ -5,6 +5,7 @@ import exception.ManagerSaveException;
 
 
 import java.io.*;
+import java.util.List;
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -28,6 +29,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (Subtask subtask : getAllSubtasks()) {
                 writer.write(subtask.toString() + "\n");
             }
+
+            writer.write("\n");
+
+            List<Task> history = historyManager.getHistory();
+            for (int i = 0; i < history.size(); i++) {
+                writer.write(String.valueOf(history.get(i).getId()));
+                if (i < history.size() - 1) {
+                    writer.write(",");
+                }
+            }
+            writer.write("\n");
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при сохранении файла", e);
         }
@@ -78,14 +90,50 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     Epic epic = manager.epics.get(subtask.getEpicId());
                     if (epic != null) {
                         epic.addSubtask(subtask);
+                        manager.updateEpicStatus(epic);
                     }
                 } else {
                     manager.tasks.put(task.getId(), task);
                 }
             }
+
+            line = reader.readLine();
+            if (line != null && !line.isEmpty()) {
+                String[] historyIds = line.split(",");
+                for (String str : historyIds) {
+                    int id = Integer.parseInt(str.trim());
+                    Task task = manager.getTaskById(id);
+                    if (task == null) {
+                        task = manager.getEpicById(id);
+                    }
+                    if (task == null) {
+                        task = manager.getSubtaskById(id);
+                    }
+                    if (task != null) {
+                        manager.historyManager.add(task);
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при загрузке из файла" + file.getName(), e);
         }
+        int maxId = 0;
+        for (Task task : manager.getAllTasks()) {
+            if (task.getId() > maxId) {
+                maxId = task.getId();
+            }
+        }
+        for (Epic epic : manager.getAllEpics()) {
+            if (epic.getId() > maxId) {
+                maxId = epic.getId();
+            }
+        }
+        for (Subtask subtask : manager.getAllSubtasks()) {
+            if (subtask.getId() > maxId) {
+                maxId = subtask.getId();
+            }
+        }
+        InMemoryTaskManager.setCountId(maxId);
         return manager;
     }
 
@@ -152,4 +200,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
+    public Task getTaskById(int id) {
+        Task task = tasks.get(id);
+        if (task != null) {
+            historyManager.add(task);
+            save();
+        }
+        return task;
+
+    }
+
+    public Epic getEpicById(int id) {
+        Epic epic = epics.get(id);
+        if (epic != null) {
+            historyManager.add(epic);
+            save();
+        }
+        return epic;
+    }
+
+    public Subtask getSubtaskById(int id) {
+        Subtask subtask = subtasks.get(id);
+        if (subtask != null) {
+            historyManager.add(subtask);
+            save();
+        }
+        return subtask;
+    }
 }
