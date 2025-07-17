@@ -7,17 +7,24 @@ import com.yandex.app.model.Status;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
     private static int countId = 0;
 
     public static int generateId() {
         return ++countId;
+    }
+
+    public static void setCountId(int id) {
+        if (id > countId) {
+            countId = id;
+        }
     }
 
     @Override
@@ -26,24 +33,24 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> getAllSubtasks() {   //Получение списка подзадач
+    public List<Subtask> getAllSubtasks() {
         return List.copyOf(subtasks.values());
     }
 
     @Override
-    public List<Epic> getAllEpics() {   //Получение спика эпиков
+    public List<Epic> getAllEpics() {
         return List.copyOf(epics.values());
     }
 
     @Override
-    public void deleteAll() { //Удаление всех видов задач
+    public void deleteAll() {
         tasks.clear();
         subtasks.clear();
         epics.clear();
     }
 
     @Override
-    public Task addTask(String title, String description) { // Добавление задач
+    public Task addTask(String title, String description) {
         int id = generateId();
         Task task = new Task(title, description, id);
         tasks.put(id, task);
@@ -51,7 +58,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask addSubtask(String title, String description, int epicId) { // Добавление подзадач
+    public Subtask addSubtask(String title, String description, int epicId) {
         if (!epics.containsKey(epicId)) {
             return null;
         }
@@ -68,7 +75,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic addEpic(String title, String description) { // Добавление эпиков
+    public Epic addEpic(String title, String description) {
         int id = generateId();
         Epic epic = new Epic(title, description, id);
         epics.put(id, epic);
@@ -76,13 +83,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) { // Обновление задач
+    public void updateTask(Task task) {
         tasks.put(task.getId(), task);
         historyManager.add(task);
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) { // Обновление подзадач
+    public void updateSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
@@ -92,7 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(Epic epic) { // Обновление эпиков
+    public void updateEpic(Epic epic) {
         epics.put(epic.getId(), epic);
         updateEpicStatus(epic);
     }
@@ -162,9 +169,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public HashMap<Integer, Subtask> getSubtasks() {
+    public Map<Integer, Subtask> getSubtasks() {
         return subtasks;
     }
 }
-
 
